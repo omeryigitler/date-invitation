@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { motion } from 'motion/react';
-import { ArrowRight, Moon, Sparkles, Sun, Sunrise } from 'lucide-react';
+import { ArrowRight, Moon, Sun, Sunrise } from 'lucide-react';
 import type { MealTime } from '../types';
 
 interface TimePickerCardProps {
@@ -9,49 +9,37 @@ interface TimePickerCardProps {
 
 type MoodOption = {
   id: MealTime;
-  eyebrow: string;
+  index: string;
   title: string;
   description: string;
   icon: ReactNode;
   image: string;
-  accent: string;
-  glow: string;
-  border: string;
 };
 
 const options: MoodOption[] = [
   {
     id: 'Sabah',
-    eyebrow: 'Sabah',
+    index: '01',
     title: 'Güne birlikte başlayalım',
     description: 'Kahvaltı, kahve ve sakin bir başlangıç.',
-    icon: <Sunrise size={28} />,
+    icon: <Sunrise size={22} />,
     image: 'https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?auto=format&fit=crop&w=1200&q=80',
-    accent: 'text-[#f6c35b]',
-    glow: 'shadow-[0_0_55px_rgba(246,195,91,0.16)]',
-    border: 'border-[#f6c35b]/25 hover:border-[#f6c35b]/55',
   },
   {
     id: 'Öğle',
-    eyebrow: 'Öğle',
+    index: '02',
     title: 'Günün ortasında küçük bir kaçış',
     description: 'Tatlı bir mola ve enerjik bir buluşma.',
-    icon: <Sun size={28} />,
+    icon: <Sun size={22} />,
     image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80',
-    accent: 'text-[#e8d59a]',
-    glow: 'shadow-[0_0_55px_rgba(232,213,154,0.13)]',
-    border: 'border-[#e8d59a]/25 hover:border-[#e8d59a]/55',
   },
   {
     id: 'Akşam',
-    eyebrow: 'Akşam',
+    index: '03',
     title: 'Gecenin en güzel planı',
     description: 'Daha romantik ve daha etkileyici bir akşam.',
-    icon: <Moon size={28} />,
+    icon: <Moon size={22} />,
     image: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=1200&q=80',
-    accent: 'text-[#d4af37]',
-    glow: 'shadow-[0_0_65px_rgba(212,175,55,0.2)]',
-    border: 'border-[#d4af37]/30 hover:border-[#d4af37]/65',
   },
 ];
 
@@ -62,75 +50,74 @@ export default function TimePickerCard({ onSelect }: TimePickerCardProps) {
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, scale: 0.98 }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className="glass-card relative w-full max-w-6xl overflow-hidden rounded-[2rem] px-6 py-8 sm:px-8 sm:py-10 md:px-10 md:py-12"
+      className="relative z-10 w-full max-w-5xl overflow-hidden rounded-2xl border border-white/10 bg-[#0a0a0c] font-mono shadow-[0_30px_90px_rgba(0,0,0,0.6)]"
     >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(212,175,55,0.08),transparent_30%)]" />
-      <div className="pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-[#d4af37]/35 to-transparent" />
-
-      <div className="relative mb-8 flex flex-col items-center text-center sm:mb-10">
-        <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-[#d4af37]/20 bg-white/[0.03] text-[#d4af37] shadow-[0_0_30px_rgba(212,175,55,0.12)]">
-          <Sparkles size={24} />
-        </div>
-
-        <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.32em] text-[#d4af37]/80">
-          Vakti seç
-        </p>
-
-        <h2 className="font-serif text-3xl italic leading-tight text-white sm:text-4xl md:text-5xl">
-          Hangi vakitte buluşalım?
-        </h2>
-
-        <p className="mt-3 max-w-xl text-sm leading-relaxed text-white/55 sm:text-base">
-          Önce buluşmanın havasını seç. Tam saati bir sonraki adımda soracağım.
-        </p>
+      {/* terminal üst bar */}
+      <div className="flex items-center gap-2 border-b border-white/[0.06] bg-white/[0.03] px-4 py-3">
+        <span className="h-3 w-3 rounded-full bg-[#ff5f57]" />
+        <span className="h-3 w-3 rounded-full bg-[#febc2e]" />
+        <span className="h-3 w-3 rounded-full bg-[#28c840]" />
+        <span className="ml-2 truncate text-[11px] tracking-wide text-white/40">randevu — zsh — vakit</span>
       </div>
 
-      <div className="relative grid grid-cols-1 gap-5 md:grid-cols-3">
-        {options.map((option, index) => (
-          <motion.button
-            key={option.id}
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.08 }}
-            whileHover={{ y: -6, scale: 1.015 }}
-            whileTap={{ scale: 0.985 }}
-            onClick={() => onSelect(option.id)}
-            className={`group relative overflow-hidden rounded-[1.75rem] border bg-[#111] text-left transition-all duration-300 ${option.border} ${option.glow}`}
-          >
-            <div className="relative h-44 overflow-hidden sm:h-48">
-              <img
-                src={option.image}
-                alt={`${option.eyebrow} buluşma atmosferi`}
-                className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
-                loading="lazy"
-                referrerPolicy="no-referrer"
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/18 to-[#111]/96" />
-              <div className={`absolute left-5 top-5 flex h-14 w-14 items-center justify-center rounded-full border border-white/15 bg-black/55 backdrop-blur-md ${option.accent}`}>
-                {option.icon}
-              </div>
-            </div>
+      <div className="relative px-6 py-7 sm:px-8 sm:py-9">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(212,175,55,0.08),transparent_38%)]" />
 
-            <div className="relative min-h-[230px] bg-[#111]/95 p-6">
-              <div className="mb-3 text-[11px] font-semibold uppercase tracking-[0.28em] text-white/45">
-                {option.eyebrow}
-              </div>
+        <div className="relative">
+          <p className="text-white/55">
+            <span className="text-[#28c840]">➜</span> <span className="text-[#7dd3fc]">~/randevu</span>{' '}
+            <span className="text-white/80">./vakit_sec.sh</span>
+          </p>
 
-              <h3 className="mb-3 font-serif text-[1.72rem] italic leading-[1.05] text-white sm:text-[1.9rem]">
-                {option.title}
-              </h3>
+          <div className="mb-7 mt-5 text-center">
+            <h2 className="font-serif text-3xl italic leading-tight text-[#d4af37] drop-shadow-[0_0_22px_rgba(212,175,55,0.16)] sm:text-4xl">
+              Hangi vakitte buluşalım?
+            </h2>
+            <p className="mx-auto mt-3 max-w-lg text-balance text-xs leading-relaxed text-white/35">
+              <span className="text-white/25">{'//'}</span> önce buluşmanın havasını seç, tam saati bir sonraki adımda soracağım
+            </p>
+          </div>
 
-              <p className="mb-8 text-sm font-medium leading-7 text-white/70 sm:text-[15px]">
-                {option.description}
-              </p>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            {options.map((option, index) => (
+              <motion.button
+                key={option.id}
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.08 }}
+                whileHover={{ y: -5 }}
+                whileTap={{ scale: 0.985 }}
+                onClick={() => onSelect(option.id)}
+                className="group relative overflow-hidden rounded-xl border border-white/10 bg-[#0c0c10] text-left transition-colors duration-300 hover:border-green-400/45"
+              >
+                <div className="relative h-40 overflow-hidden sm:h-44">
+                  <img
+                    src={option.image}
+                    alt={`${option.id} buluşma atmosferi`}
+                    className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                    loading="lazy"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/20 to-[#0c0c10]" />
+                  <div className="absolute left-4 top-4 flex h-11 w-11 items-center justify-center rounded-lg border border-white/15 bg-black/55 text-[#d4af37] backdrop-blur-md">
+                    {option.icon}
+                  </div>
+                  <div className="absolute right-4 top-4 text-xs text-white/45">{option.index}</div>
+                </div>
 
-              <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between gap-3 text-sm font-semibold text-white/78 transition-colors group-hover:text-white">
-                <span>Bu vakti seç</span>
-                <ArrowRight size={16} className="shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
-              </div>
-            </div>
-          </motion.button>
-        ))}
+                <div className="p-5">
+                  <div className="text-[11px] uppercase tracking-[0.24em] text-green-400/80">{option.id}</div>
+                  <h3 className="mt-2 font-serif text-xl italic leading-tight text-white">{option.title}</h3>
+                  <p className="mt-2 text-xs leading-relaxed text-white/55">{option.description}</p>
+                  <div className="mt-4 flex items-center gap-2 text-sm font-semibold text-green-300 transition-colors">
+                    <span>→ bu vakti seç</span>
+                    <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
+                  </div>
+                </div>
+              </motion.button>
+            ))}
+          </div>
+        </div>
       </div>
     </motion.div>
   );

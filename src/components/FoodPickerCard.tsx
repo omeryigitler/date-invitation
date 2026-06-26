@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowLeft, ArrowRight, Check, Sparkles } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
+import { cn } from '../lib/utils';
 import type { MealTime } from '../types';
 
 interface FoodPickerCardProps {
@@ -103,135 +104,145 @@ export default function FoodPickerCard({ time, onSelect }: FoodPickerCardProps) 
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, scale: 0.98 }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className="glass-card relative grid min-h-[620px] w-full max-w-6xl overflow-hidden rounded-[2rem] border border-white/5 bg-[#14141b] shadow-2xl lg:grid-cols-[0.9fr_1.1fr]"
+      className="relative z-10 w-full max-w-5xl overflow-hidden rounded-2xl border border-white/10 bg-[#0a0a0c] font-mono shadow-[0_30px_90px_rgba(0,0,0,0.6)]"
     >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_0%_0%,rgba(255,123,123,0.1),transparent_30%),radial-gradient(circle_at_100%_100%,rgba(212,175,55,0.08),transparent_34%)]" />
-      <div className="pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-[#ff7b7b]/45 to-transparent" />
-
-      <div className="relative z-10 flex flex-col p-7 sm:p-9 lg:p-12">
-        <div className="mb-9">
-          <p className="mb-3 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.32em] text-[#ff7b7b]/80">
-            <Sparkles size={15} />
-            {time} menüsü
-          </p>
-          <h2 className="font-serif text-4xl italic leading-tight text-white md:text-5xl">
-            Ne yiyelim?
-          </h2>
-          <p className="mt-3 max-w-md text-sm leading-relaxed text-white/55">
-            Menüden bir favori seç. Sağdaki görsel seçtiğin lezzete göre değişecek.
-          </p>
-        </div>
-
-        <div className="mb-8 flex flex-1 flex-col gap-3">
-          {options.map((option, index) => {
-            const isActive = currentIndex === index;
-
-            return (
-              <button
-                key={option.label}
-                onClick={() => setCurrentIndex(index)}
-                className={`group rounded-2xl border p-4 text-left transition-all duration-300 ${
-                  isActive
-                    ? 'border-[#ff7b7b]/55 bg-white/[0.07] shadow-[0_0_26px_rgba(255,123,123,0.12)]'
-                    : 'border-white/8 bg-white/[0.025] hover:border-white/18 hover:bg-white/[0.05]'
-                }`}
-              >
-                <div className="flex items-start gap-4">
-                  <div className={`mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border transition-all ${isActive ? 'border-[#ff7b7b] bg-[#ff7b7b] text-white' : 'border-white/15 text-white/35 group-hover:text-white/70'}`}>
-                    {isActive ? <Check size={15} /> : <span className="h-1.5 w-1.5 rounded-full bg-current" />}
-                  </div>
-                  <div>
-                    <h3 className={`font-serif text-xl italic leading-tight transition-colors md:text-2xl ${isActive ? 'text-white' : 'text-white/45 group-hover:text-white/75'}`}>
-                      {option.label}
-                    </h3>
-                    <AnimatePresence initial={false}>
-                      {isActive && (
-                        <motion.p
-                          initial={{ opacity: 0, y: -4, height: 0 }}
-                          animate={{ opacity: 1, y: 0, height: 'auto' }}
-                          exit={{ opacity: 0, y: -4, height: 0 }}
-                          className="mt-2 overflow-hidden text-sm leading-relaxed text-white/62"
-                        >
-                          {option.desc}
-                        </motion.p>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                </div>
-              </button>
-            );
-          })}
-        </div>
-
-        <button
-          onClick={() => onSelect(currentOption.label)}
-          className="inline-flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#ff7b7b] to-[#ff526c] px-8 text-sm font-bold uppercase tracking-[0.18em] text-white shadow-lg shadow-[#ff526c]/20 transition-all hover:-translate-y-0.5 hover:shadow-[#ff526c]/40 active:scale-95"
-        >
-          Seçimi Onayla
-          <ArrowRight size={17} />
-        </button>
+      {/* terminal üst bar */}
+      <div className="flex items-center gap-2 border-b border-white/[0.06] bg-white/[0.03] px-4 py-3">
+        <span className="h-3 w-3 rounded-full bg-[#ff5f57]" />
+        <span className="h-3 w-3 rounded-full bg-[#febc2e]" />
+        <span className="h-3 w-3 rounded-full bg-[#28c840]" />
+        <span className="ml-2 truncate text-[11px] tracking-wide text-white/40">randevu — zsh — menü</span>
       </div>
 
-      <div className="relative z-10 min-h-[420px] overflow-hidden bg-[#0f0f15] lg:min-h-[620px]">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentOption.label}
-            initial={{ opacity: 0, scale: 1.04 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.98 }}
-            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute inset-0"
-          >
-            <img
-              src={currentOption.image1}
-              alt={currentOption.label}
-              className="h-full w-full object-cover"
-              draggable={false}
-              referrerPolicy="no-referrer"
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/8 via-black/18 to-black/82" />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/35 via-transparent to-transparent" />
-          </motion.div>
-        </AnimatePresence>
+      <div className="grid min-h-[560px] lg:grid-cols-[0.95fr_1.05fr]">
+        {/* sol: terminal menü */}
+        <div className="relative z-10 flex flex-col p-6 sm:p-8">
+          <p className="text-white/55">
+            <span className="text-[#28c840]">➜</span> <span className="text-[#7dd3fc]">~/randevu</span>{' '}
+            <span className="text-white/80">./menu_sec.sh --{time.toLowerCase()}</span>
+          </p>
 
-        <div className="absolute left-6 right-6 top-6 flex items-center justify-between">
-          <div className="rounded-full border border-white/12 bg-black/45 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-white/75 backdrop-blur-md">
-            {String(currentIndex + 1).padStart(2, '0')} / {String(options.length).padStart(2, '0')}
-          </div>
-          <div className="flex gap-2">
-            <button onClick={handlePrev} className="flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-black/45 text-white backdrop-blur-md transition hover:bg-white/10">
-              <ArrowLeft size={18} />
-            </button>
-            <button onClick={handleNext} className="flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-black/45 text-white backdrop-blur-md transition hover:bg-white/10">
-              <ArrowRight size={18} />
-            </button>
-          </div>
-        </div>
-
-        <div className="absolute bottom-6 left-6 right-6">
-          <div className="mb-5 max-w-md rounded-[1.5rem] border border-white/10 bg-black/45 p-5 text-white shadow-2xl backdrop-blur-md">
-            <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.28em] text-[#ff7b7b]/90">Seçili lezzet</p>
-            <h3 className="font-serif text-3xl italic leading-tight">{currentOption.label}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-white/68">{currentOption.desc}</p>
+          <div className="mb-6 mt-5">
+            <h2 className="font-serif text-3xl italic leading-tight text-[#d4af37] drop-shadow-[0_0_22px_rgba(212,175,55,0.16)] md:text-4xl">
+              Ne yiyelim?
+            </h2>
+            <p className="mt-3 max-w-md text-xs leading-relaxed text-white/35">
+              <span className="text-white/25">{'//'}</span> bir favori seç, sağdaki görsel seçtiğin lezzete göre değişsin
+            </p>
           </div>
 
-          <div className="flex gap-3 overflow-x-auto pb-1">
+          <div className="mb-6 flex flex-1 flex-col gap-2.5">
             {options.map((option, index) => {
-              const isActive = index === currentIndex;
+              const isActive = currentIndex === index;
 
               return (
                 <button
                   key={option.label}
                   onClick={() => setCurrentIndex(index)}
-                  className={`relative h-16 w-24 shrink-0 overflow-hidden rounded-2xl border transition-all ${
-                    isActive ? 'border-[#ff7b7b] opacity-100 shadow-[0_0_18px_rgba(255,123,123,0.25)]' : 'border-white/15 opacity-55 hover:opacity-90'
-                  }`}
+                  className={cn(
+                    'group rounded-lg border p-3.5 text-left transition-all duration-300',
+                    isActive
+                      ? 'border-green-400/50 bg-green-400/[0.07]'
+                      : 'border-white/[0.08] bg-white/[0.02] hover:border-white/20 hover:bg-white/[0.04]',
+                  )}
                 >
-                  <img src={option.image1} alt={option.label} className="h-full w-full object-cover" referrerPolicy="no-referrer" />
-                  <div className="absolute inset-0 bg-black/15" />
+                  <div className="flex items-start gap-3">
+                    <div
+                      className={cn(
+                        'mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded border transition-all',
+                        isActive ? 'border-green-400 bg-green-400 text-black' : 'border-white/15 text-white/35 group-hover:text-white/60',
+                      )}
+                    >
+                      {isActive ? <Check size={13} /> : <span className="h-1.5 w-1.5 rounded-full bg-current" />}
+                    </div>
+                    <div>
+                      <h3 className={cn('font-serif text-lg italic leading-tight transition-colors md:text-xl', isActive ? 'text-white' : 'text-white/45 group-hover:text-white/75')}>
+                        {option.label}
+                      </h3>
+                      <AnimatePresence initial={false}>
+                        {isActive && (
+                          <motion.p
+                            initial={{ opacity: 0, y: -4, height: 0 }}
+                            animate={{ opacity: 1, y: 0, height: 'auto' }}
+                            exit={{ opacity: 0, y: -4, height: 0 }}
+                            className="mt-1.5 overflow-hidden text-xs leading-relaxed text-white/55"
+                          >
+                            {option.desc}
+                          </motion.p>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  </div>
                 </button>
               );
             })}
+          </div>
+
+          <button
+            onClick={() => onSelect(currentOption.label)}
+            className="inline-flex min-h-14 items-center justify-center gap-2 rounded-lg bg-green-400 px-8 py-3.5 text-sm font-bold uppercase tracking-[0.16em] text-black transition-all hover:-translate-y-0.5 hover:bg-green-300 active:scale-95"
+          >
+            → seçimi onayla
+            <ArrowRight size={16} />
+          </button>
+        </div>
+
+        {/* sağ: görsel paneli */}
+        <div className="relative z-10 min-h-[360px] overflow-hidden border-t border-white/[0.06] bg-[#070708] lg:min-h-[560px] lg:border-l lg:border-t-0">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentOption.label}
+              initial={{ opacity: 0, scale: 1.04 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.98 }}
+              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+              className="absolute inset-0"
+            >
+              <img src={currentOption.image1} alt={currentOption.label} className="h-full w-full object-cover" draggable={false} referrerPolicy="no-referrer" />
+              <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/25 to-black/85" />
+            </motion.div>
+          </AnimatePresence>
+
+          <div className="absolute left-5 right-5 top-5 flex items-center justify-between">
+            <div className="rounded-md border border-white/12 bg-black/55 px-3 py-1.5 text-xs text-green-300 backdrop-blur-md">
+              {String(currentIndex + 1).padStart(2, '0')} / {String(options.length).padStart(2, '0')}
+            </div>
+            <div className="flex gap-2">
+              <button onClick={handlePrev} className="flex h-10 w-10 items-center justify-center rounded-md border border-white/12 bg-black/55 text-white backdrop-blur-md transition hover:bg-white/10">
+                <ArrowLeft size={17} />
+              </button>
+              <button onClick={handleNext} className="flex h-10 w-10 items-center justify-center rounded-md border border-white/12 bg-black/55 text-white backdrop-blur-md transition hover:bg-white/10">
+                <ArrowRight size={17} />
+              </button>
+            </div>
+          </div>
+
+          <div className="absolute bottom-5 left-5 right-5">
+            <div className="mb-4 rounded-lg border border-white/10 bg-black/55 p-4 text-white backdrop-blur-md">
+              <p className="mb-1.5 text-[10px] uppercase tracking-[0.24em] text-green-400/90">seçili lezzet</p>
+              <h3 className="font-serif text-2xl italic leading-tight">{currentOption.label}</h3>
+              <p className="mt-1.5 text-xs leading-relaxed text-white/65">{currentOption.desc}</p>
+            </div>
+
+            <div className="flex gap-2.5 overflow-x-auto pb-1">
+              {options.map((option, index) => {
+                const isActive = index === currentIndex;
+
+                return (
+                  <button
+                    key={option.label}
+                    onClick={() => setCurrentIndex(index)}
+                    className={cn(
+                      'relative h-14 w-20 shrink-0 overflow-hidden rounded-md border transition-all',
+                      isActive ? 'border-green-400 opacity-100' : 'border-white/15 opacity-55 hover:opacity-90',
+                    )}
+                  >
+                    <img src={option.image1} alt={option.label} className="h-full w-full object-cover" referrerPolicy="no-referrer" />
+                    <div className="absolute inset-0 bg-black/15" />
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
