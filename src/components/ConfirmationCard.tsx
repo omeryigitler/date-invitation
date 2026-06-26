@@ -3,31 +3,37 @@ import confetti from 'canvas-confetti';
 import { format } from 'date-fns';
 import { tr } from 'date-fns/locale';
 import { motion } from 'motion/react';
-import { Calendar, Check, Clock, PartyPopper, Share2, Utensils } from 'lucide-react';
+import { Check, Share2 } from 'lucide-react';
 import type { DateDetails } from '../types';
 
 interface ConfirmationCardProps {
   details: DateDetails;
 }
 
-const CONFETTI_COLORS = ['#d4af37', '#b8962d', '#ffffff', '#aaaaaa', '#333333'];
+const CONFETTI_COLORS = ['#4ade80', '#d4af37', '#ffffff', '#22c55e', '#9ca3af'];
 
 export default function ConfirmationCard({ details }: ConfirmationCardProps) {
   const [copied, setCopied] = useState(false);
   const formattedDate = details.dateTime ? format(details.dateTime, 'd MMMM yyyy, EEEE', { locale: tr }) : '';
   const formattedTime = details.dateTime ? format(details.dateTime, 'HH:mm') : '';
 
+  const rows = [
+    { key: 'tarih', value: formattedDate },
+    { key: 'saat', value: [details.mealTime, formattedTime].filter(Boolean).join(' · ') },
+    { key: 'menu', value: details.food ?? '' },
+  ];
+
   const shareText = [
-    'Buluşma planımız hazır! 💛',
+    'buluşma planı: derlendi ✓',
     `📅 ${formattedDate}`,
-    `🕘 ${details.mealTime}${formattedTime ? ` • ${formattedTime}` : ''}`,
-    `🍽️ ${details.food}`,
+    `🕘 ${[details.mealTime, formattedTime].filter(Boolean).join(' · ')}`,
+    `🍽️ ${details.food ?? ''}`,
   ].join('\n');
 
   const handleShare = async () => {
     if (navigator.share) {
       try {
-        await navigator.share({ title: 'Buluşma Planımız', text: shareText });
+        await navigator.share({ title: 'Buluşma Planı', text: shareText });
       } catch {
         // paylaşım iptal edildi — sessizce geç
       }
@@ -55,70 +61,70 @@ export default function ConfirmationCard({ details }: ConfirmationCardProps) {
   }, []);
 
   return (
-    <>
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="glass-card relative z-10 w-full max-w-md rounded-3xl p-8"
-      >
-        <div className="mb-8 flex flex-col items-center">
-          <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full border border-white/10 bg-white/5 text-[#d4af37]">
-            <PartyPopper size={32} />
-          </div>
-          <h2 className="mb-2 text-center font-serif text-3xl italic text-white">Harika!</h2>
-          <p className="mb-4 text-center text-[10px] font-semibold uppercase tracking-widest text-[#d4af37]">Planımız hazır. Sabırsızlanıyorum!</p>
+    <motion.div
+      initial={{ opacity: 0, y: 16, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      className="relative z-10 w-full max-w-lg overflow-hidden rounded-2xl border border-white/10 bg-[#0a0a0c] font-mono shadow-[0_30px_90px_rgba(0,0,0,0.6)]"
+    >
+      {/* terminal üst bar */}
+      <div className="flex items-center gap-2 border-b border-white/[0.06] bg-white/[0.03] px-4 py-3">
+        <span className="h-3 w-3 rounded-full bg-[#ff5f57]" />
+        <span className="h-3 w-3 rounded-full bg-[#febc2e]" />
+        <span className="h-3 w-3 rounded-full bg-[#28c840]" />
+        <span className="ml-2 truncate text-[11px] tracking-wide text-white/40">randevu — zsh — onaylandı ✓</span>
+      </div>
+
+      {/* terminal gövde */}
+      <div className="space-y-1.5 p-5 text-[13px] leading-relaxed sm:p-6 sm:text-sm">
+        <p className="text-white/55">
+          <span className="text-[#28c840]">➜</span> <span className="text-[#7dd3fc]">~/randevu</span>{' '}
+          <span className="text-white/80">./planla.sh --onayla</span>
+        </p>
+
+        <p className="text-green-400">✓ bağlantı kuruldu</p>
+        <p className="text-green-400">
+          ✓ plan derlendi <span className="text-white/35">(0 hata, 1 ❤️)</span>
+        </p>
+        <p className="text-green-400">✓ deploy başarılı</p>
+
+        <div className="my-4 rounded-lg border border-white/[0.08] bg-black/40 p-4">
+          <p className="mb-2 text-white/35">$ cat randevu.json</p>
+          <p className="text-white/70">{'{'}</p>
+          {rows.map(row => (
+            <p key={row.key} className="break-words pl-5">
+              <span className="text-[#7dd3fc]">&quot;{row.key}&quot;</span>
+              <span className="text-white/40">: </span>
+              <span className="text-[#d4af37]">&quot;{row.value}&quot;</span>
+              <span className="text-white/40">,</span>
+            </p>
+          ))}
+          <p className="text-white/70">{'}'}</p>
         </div>
 
-        <div className="space-y-4 rounded-2xl border border-white/10 bg-black/40 p-6">
-          <div className="flex items-center gap-4">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/5 bg-white/5 text-[#d4af37]">
-              <Calendar size={20} />
-            </div>
-            <div>
-              <div className="mb-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/40">Tarih</div>
-              <div className="font-serif italic text-white">{formattedDate}</div>
-            </div>
-          </div>
+        <p className="text-white/70">
+          <span className="font-semibold text-green-400">STATUS</span>: 200 OK — görüşmek üzere
+          <motion.span
+            animate={{ opacity: [1, 1, 0, 0] }}
+            transition={{ repeat: Infinity, duration: 1, times: [0, 0.5, 0.51, 1] }}
+            className="ml-1 inline-block h-4 w-2 translate-y-0.5 bg-green-400 align-middle"
+          />
+        </p>
 
-          <div className="h-px w-full bg-white/10" />
+        <p className="pt-0.5 text-white/30">
+          <span className="text-white/25">{'//'}</span> TODO: heyecanı gizle → <span className="text-[#ff5f57]">FAILED</span>
+        </p>
 
-          <div className="flex items-center gap-4">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/5 bg-white/5 text-[#d4af37]">
-              <Clock size={20} />
-            </div>
-            <div>
-              <div className="mb-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/40">Zaman</div>
-              <div className="font-serif italic text-white">
-                {details.mealTime} {formattedTime && `• ${formattedTime}`}
-              </div>
-            </div>
-          </div>
+        <button
+          onClick={handleShare}
+          className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-lg border border-green-400/40 bg-green-400/10 px-5 py-3 text-sm font-semibold text-green-300 transition hover:bg-green-400/20 active:scale-[0.98]"
+        >
+          {copied ? <Check size={16} /> : <Share2 size={16} />}
+          {copied ? 'panoya kopyalandı ✓' : '$ planı_paylaş'}
+        </button>
 
-          <div className="h-px w-full bg-white/10" />
-
-          <div className="flex items-center gap-4">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/5 bg-white/5 text-[#d4af37]">
-              <Utensils size={20} />
-            </div>
-            <div>
-              <div className="mb-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/40">Menü</div>
-              <div className="font-serif italic text-white">{details.food}</div>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-8 flex flex-col items-center gap-3">
-          <button
-            onClick={handleShare}
-            className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#d4af37] px-6 text-sm font-semibold text-black transition hover:scale-[1.02] active:scale-95"
-          >
-            {copied ? <Check size={17} /> : <Share2 size={17} />}
-            {copied ? 'Panoya kopyalandı!' : 'Planı paylaş'}
-          </button>
-          <p className="text-center text-[10px] uppercase tracking-widest text-white/30">Planı bana gönder, gerisini bana bırak 💛</p>
-        </div>
-      </motion.div>
-    </>
+        <p className="pt-2 text-center text-[11px] text-white/25">git push origin kalbim — gerisini bana bırak</p>
+      </div>
+    </motion.div>
   );
 }
