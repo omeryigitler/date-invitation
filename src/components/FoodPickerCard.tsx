@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
+import { ArrowLeft, ArrowRight, Check, Sparkles } from 'lucide-react';
 import type { MealTime } from '../types';
 
 interface FoodPickerCardProps {
@@ -11,78 +12,78 @@ const foodOptions: Record<MealTime, { label: string; image1: string; image2: str
   Sabah: [
     {
       label: 'Pancake & Kahve',
-      image1: 'https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=800&q=80',
-      image2: 'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=400&q=80',
+      image1: 'https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=1200&q=80',
+      image2: 'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=500&q=80',
       desc: 'Güne tatlı bir başlangıç. Sıcak kahve ve taptaze pancakeler.',
     },
     {
       label: 'Serpme Kahvaltı',
-      image1: 'https://images.unsplash.com/photo-1533089859715-31187c4e3ee9?w=800&q=80',
-      image2: 'https://images.unsplash.com/photo-1525385133512-2f3bdd039054?w=400&q=80',
+      image1: 'https://images.unsplash.com/photo-1533089859715-31187c4e3ee9?w=1200&q=80',
+      image2: 'https://images.unsplash.com/photo-1525385133512-2f3bdd039054?w=500&q=80',
       desc: 'Zengin çeşitleriyle geleneksel ve keyifli bir sabah ziyafeti.',
     },
     {
       label: 'Kruvasan & Çay',
-      image1: 'https://images.unsplash.com/photo-1495147466023-ac5c588e2e94?w=800&q=80',
-      image2: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=400&q=80',
+      image1: 'https://images.unsplash.com/photo-1495147466023-ac5c588e2e94?w=1200&q=80',
+      image2: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=500&q=80',
       desc: 'Zarif ve hafif. Taze fırından çıkmış kruvasan.',
     },
     {
       label: 'Sağlıklı Kase',
-      image1: 'https://images.unsplash.com/photo-1511690743698-d9d85f2fbf38?w=800&q=80',
-      image2: 'https://images.unsplash.com/photo-1494597564530-871f2b93ac55?w=400&q=80',
+      image1: 'https://images.unsplash.com/photo-1511690743698-d9d85f2fbf38?w=1200&q=80',
+      image2: 'https://images.unsplash.com/photo-1494597564530-871f2b93ac55?w=500&q=80',
       desc: 'Taze meyveler ve granola ile ferahlatıcı bir başlangıç.',
     },
   ],
   Öğle: [
     {
       label: 'İtalyan (Pizza/Makarna)',
-      image1: 'https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=800&q=80',
-      image2: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&q=80',
+      image1: 'https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=1200&q=80',
+      image2: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80',
       desc: 'Taze el yapımı makarna ve İtalyan lezzetleri.',
     },
     {
       label: 'Burger & Patates',
-      image1: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&q=80',
-      image2: 'https://images.unsplash.com/photo-1576107232684-1279f3908594?w=400&q=80',
+      image1: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=1200&q=80',
+      image2: 'https://images.unsplash.com/photo-1576107232684-1279f3908594?w=500&q=80',
       desc: 'Günün yorgunluğunu alacak doyurucu ve lezzetli bir klasik.',
     },
     {
       label: 'Taze Salata',
-      image1: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&q=80',
-      image2: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400&q=80',
+      image1: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1200&q=80',
+      image2: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=500&q=80',
       desc: 'Hafif, sağlıklı ve renkli bir öğle yemeği.',
     },
     {
       label: 'Uzak Doğu',
-      image1: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=800&q=80',
-      image2: 'https://images.unsplash.com/photo-1552611052-33e04de081de?w=400&q=80',
+      image1: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=1200&q=80',
+      image2: 'https://images.unsplash.com/photo-1552611052-33e04de081de?w=500&q=80',
       desc: 'Baharatların ve lezzetin mükemmel uyumu.',
     },
   ],
   Akşam: [
     {
       label: 'Sushi & Uzak Doğu',
-      image1: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=800&q=80',
-      image2: 'https://images.unsplash.com/photo-1611143669185-af224c5e3252?w=400&q=80',
+      image1: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=1200&q=80',
+      image2: 'https://images.unsplash.com/photo-1611143669185-af224c5e3252?w=500&q=80',
       desc: 'Zarif ve farklı lezzetler arayanlar için muazzam bir seçim.',
     },
     {
       label: 'Şık Bir Et Yemeği',
-      image1: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80',
-      image2: 'https://images.unsplash.com/photo-1506526135688-667727145719?w=400&q=80',
+      image1: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=1200&q=80',
+      image2: 'https://images.unsplash.com/photo-1506526135688-667727145719?w=500&q=80',
       desc: 'Kırmızı şarap eşliğinde unutulmaz bir akşam yemeği.',
     },
     {
       label: 'Deniz Ürünleri',
-      image1: 'https://images.unsplash.com/photo-1615141982883-c7da0e69f58f?w=800&q=80',
-      image2: 'https://images.unsplash.com/photo-1599084993091-1cb5c0721cc6?w=400&q=80',
+      image1: 'https://images.unsplash.com/photo-1615141982883-c7da0e69f58f?w=1200&q=80',
+      image2: 'https://images.unsplash.com/photo-1599084993091-1cb5c0721cc6?w=500&q=80',
       desc: 'Taze deniz ürünleri ile hafif ve romantik bir akşam.',
     },
     {
       label: 'Romantik İtalyan',
-      image1: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=800&q=80',
-      image2: 'https://images.unsplash.com/photo-1572550502159-fb93a4bc0303?w=400&q=80',
+      image1: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=1200&q=80',
+      image2: 'https://images.unsplash.com/photo-1572550502159-fb93a4bc0303?w=500&q=80',
       desc: 'Mum ışığında, şık bir atmosferde eşsiz İtalyan tatları.',
     },
   ],
@@ -98,29 +99,65 @@ export default function FoodPickerCard({ time, onSelect }: FoodPickerCardProps) 
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.95 }}
+      initial={{ opacity: 0, y: 18, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.98 }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className="flex min-h-[550px] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-white/5 bg-[#1c1c24] shadow-2xl md:flex-row"
+      className="glass-card relative grid min-h-[620px] w-full max-w-6xl overflow-hidden rounded-[2rem] border border-white/5 bg-[#14141b] shadow-2xl lg:grid-cols-[0.9fr_1.1fr]"
     >
-      <div className="relative z-20 flex w-full flex-col justify-center p-8 md:w-1/2 md:p-12">
-        <h2 className="mb-8 font-serif text-4xl italic text-[#ff7b7b] md:text-5xl">{time} Menüsü</h2>
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_0%_0%,rgba(255,123,123,0.1),transparent_30%),radial-gradient(circle_at_100%_100%,rgba(212,175,55,0.08),transparent_34%)]" />
+      <div className="pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-[#ff7b7b]/45 to-transparent" />
 
-        <div className="mb-10 flex flex-1 flex-col justify-center space-y-5">
+      <div className="relative z-10 flex flex-col p-7 sm:p-9 lg:p-12">
+        <div className="mb-9">
+          <p className="mb-3 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.32em] text-[#ff7b7b]/80">
+            <Sparkles size={15} />
+            {time} menüsü
+          </p>
+          <h2 className="font-serif text-4xl italic leading-tight text-white md:text-5xl">
+            Ne yiyelim?
+          </h2>
+          <p className="mt-3 max-w-md text-sm leading-relaxed text-white/55">
+            Menüden bir favori seç. Sağdaki görsel seçtiğin lezzete göre değişecek.
+          </p>
+        </div>
+
+        <div className="mb-8 flex flex-1 flex-col gap-3">
           {options.map((option, index) => {
             const isActive = currentIndex === index;
 
             return (
-              <button key={option.label} onClick={() => setCurrentIndex(index)} className="block w-full text-left outline-none transition-all duration-300 group">
-                <h3 className={`font-serif text-xl transition-colors md:text-2xl ${isActive ? 'text-white' : 'text-white/40 group-hover:text-white/70'}`}>
-                  {option.label}
-                </h3>
-                {isActive && (
-                  <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="mt-2 text-sm leading-relaxed text-white/60">
-                    {option.desc}
-                  </motion.p>
-                )}
+              <button
+                key={option.label}
+                onClick={() => setCurrentIndex(index)}
+                className={`group rounded-2xl border p-4 text-left transition-all duration-300 ${
+                  isActive
+                    ? 'border-[#ff7b7b]/55 bg-white/[0.07] shadow-[0_0_26px_rgba(255,123,123,0.12)]'
+                    : 'border-white/8 bg-white/[0.025] hover:border-white/18 hover:bg-white/[0.05]'
+                }`}
+              >
+                <div className="flex items-start gap-4">
+                  <div className={`mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border transition-all ${isActive ? 'border-[#ff7b7b] bg-[#ff7b7b] text-white' : 'border-white/15 text-white/35 group-hover:text-white/70'}`}>
+                    {isActive ? <Check size={15} /> : <span className="h-1.5 w-1.5 rounded-full bg-current" />}
+                  </div>
+                  <div>
+                    <h3 className={`font-serif text-xl italic leading-tight transition-colors md:text-2xl ${isActive ? 'text-white' : 'text-white/45 group-hover:text-white/75'}`}>
+                      {option.label}
+                    </h3>
+                    <AnimatePresence initial={false}>
+                      {isActive && (
+                        <motion.p
+                          initial={{ opacity: 0, y: -4, height: 0 }}
+                          animate={{ opacity: 1, y: 0, height: 'auto' }}
+                          exit={{ opacity: 0, y: -4, height: 0 }}
+                          className="mt-2 overflow-hidden text-sm leading-relaxed text-white/62"
+                        >
+                          {option.desc}
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
               </button>
             );
           })}
@@ -128,84 +165,74 @@ export default function FoodPickerCard({ time, onSelect }: FoodPickerCardProps) 
 
         <button
           onClick={() => onSelect(currentOption.label)}
-          className="rounded-md bg-gradient-to-r from-[#ff7b7b] to-[#ff526c] px-8 py-3 text-sm font-medium uppercase tracking-wider text-white shadow-lg shadow-[#ff526c]/20 transition-all hover:-translate-y-0.5 hover:shadow-[#ff526c]/40 active:scale-95"
+          className="inline-flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#ff7b7b] to-[#ff526c] px-8 text-sm font-bold uppercase tracking-[0.18em] text-white shadow-lg shadow-[#ff526c]/20 transition-all hover:-translate-y-0.5 hover:shadow-[#ff526c]/40 active:scale-95"
         >
           Seçimi Onayla
+          <ArrowRight size={17} />
         </button>
       </div>
 
-      <div className="relative z-10 flex min-h-[400px] w-full items-center justify-center overflow-hidden bg-[#13131a] md:min-h-[550px] md:w-1/2">
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-[#ff7b7b]/5 to-transparent" />
+      <div className="relative z-10 min-h-[420px] overflow-hidden bg-[#0f0f15] lg:min-h-[620px]">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentOption.label}
+            initial={{ opacity: 0, scale: 1.04 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.98 }}
+            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute inset-0"
+          >
+            <img
+              src={currentOption.image1}
+              alt={currentOption.label}
+              className="h-full w-full object-cover"
+              draggable={false}
+              referrerPolicy="no-referrer"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/8 via-black/18 to-black/82" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/35 via-transparent to-transparent" />
+          </motion.div>
+        </AnimatePresence>
 
-        <div className="relative flex h-full w-full items-center justify-center">
-          {options.map((option, index) => {
-            let offset = (index - currentIndex) % options.length;
-            if (offset < 0) offset += options.length;
+        <div className="absolute left-6 right-6 top-6 flex items-center justify-between">
+          <div className="rounded-full border border-white/12 bg-black/45 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-white/75 backdrop-blur-md">
+            {String(currentIndex + 1).padStart(2, '0')} / {String(options.length).padStart(2, '0')}
+          </div>
+          <div className="flex gap-2">
+            <button onClick={handlePrev} className="flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-black/45 text-white backdrop-blur-md transition hover:bg-white/10">
+              <ArrowLeft size={18} />
+            </button>
+            <button onClick={handleNext} className="flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-black/45 text-white backdrop-blur-md transition hover:bg-white/10">
+              <ArrowRight size={18} />
+            </button>
+          </div>
+        </div>
 
-            let x = 60;
-            let scale = 0.8;
-            let opacity = 0;
-            let zIndex = 0;
+        <div className="absolute bottom-6 left-6 right-6">
+          <div className="mb-5 max-w-md rounded-[1.5rem] border border-white/10 bg-black/45 p-5 text-white shadow-2xl backdrop-blur-md">
+            <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.28em] text-[#ff7b7b]/90">Seçili lezzet</p>
+            <h3 className="font-serif text-3xl italic leading-tight">{currentOption.label}</h3>
+            <p className="mt-2 text-sm leading-relaxed text-white/68">{currentOption.desc}</p>
+          </div>
 
-            if (offset === 0) {
-              x = 0;
-              scale = 1;
-              opacity = 1;
-              zIndex = 30;
-            } else if (offset === 1) {
-              x = 60;
-              scale = 0.85;
-              opacity = 0.5;
-              zIndex = 20;
-            } else if (offset === options.length - 1) {
-              x = -60;
-              scale = 0.85;
-              opacity = 0;
-              zIndex = 10;
-            }
+          <div className="flex gap-3 overflow-x-auto pb-1">
+            {options.map((option, index) => {
+              const isActive = index === currentIndex;
 
-            return (
-              <motion.div
-                key={option.label}
-                initial={false}
-                animate={{ x, scale, opacity, zIndex }}
-                transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
-                className="absolute inset-0 flex items-center justify-center"
-                style={{ pointerEvents: offset === 0 || offset === 1 ? 'auto' : 'none' }}
-              >
-                <motion.div
-                  className={`relative h-full w-full ${offset === 0 ? 'cursor-grab active:cursor-grabbing' : offset === 1 ? 'cursor-pointer' : ''}`}
-                  onClick={() => {
-                    if (offset === 1) handleNext();
-                    else if (offset === options.length - 1) handlePrev();
-                  }}
-                  drag={offset === 0 ? 'x' : false}
-                  dragConstraints={{ left: 0, right: 0 }}
-                  dragElastic={0.2}
-                  onDragEnd={(_, { offset: dragOffset, velocity }) => {
-                    if (dragOffset.x < -50 || velocity.x < -500) handleNext();
-                    else if (dragOffset.x > 50 || velocity.x > 500) handlePrev();
-                  }}
+              return (
+                <button
+                  key={option.label}
+                  onClick={() => setCurrentIndex(index)}
+                  className={`relative h-16 w-24 shrink-0 overflow-hidden rounded-2xl border transition-all ${
+                    isActive ? 'border-[#ff7b7b] opacity-100 shadow-[0_0_18px_rgba(255,123,123,0.25)]' : 'border-white/15 opacity-55 hover:opacity-90'
+                  }`}
                 >
-                  <img
-                    src={option.image1}
-                    alt={option.label}
-                    className="pointer-events-none absolute right-4 top-1/2 h-48 w-48 -translate-y-1/2 select-none rounded-[2rem] border border-white/5 object-cover shadow-2xl md:right-10 md:h-[260px] md:w-[260px]"
-                    draggable={false}
-                    referrerPolicy="no-referrer"
-                  />
-
-                  <img
-                    src={option.image2}
-                    alt={`${option.label} detail`}
-                    className="pointer-events-none absolute left-8 top-1/2 h-56 w-28 -translate-y-1/2 select-none rounded-[1.5rem] border-[6px] border-[#13131a] object-cover shadow-2xl md:h-[300px] md:w-[150px]"
-                    draggable={false}
-                    referrerPolicy="no-referrer"
-                  />
-                </motion.div>
-              </motion.div>
-            );
-          })}
+                  <img src={option.image1} alt={option.label} className="h-full w-full object-cover" referrerPolicy="no-referrer" />
+                  <div className="absolute inset-0 bg-black/15" />
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
     </motion.div>
