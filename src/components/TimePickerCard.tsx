@@ -24,7 +24,7 @@ const options: MoodOption[] = [
     id: 'Sabah',
     eyebrow: 'Sabah',
     title: 'Güne birlikte başlayalım',
-    description: 'Sıcak bir kahvaltı, sakin bir başlangıç ve güzel bir sabah hissi.',
+    description: 'Kahvaltı, kahve ve sakin bir başlangıç.',
     icon: <Sunrise size={28} />,
     image: 'https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?auto=format&fit=crop&w=1200&q=80',
     accent: 'text-[#f6c35b]',
@@ -35,7 +35,7 @@ const options: MoodOption[] = [
     id: 'Öğle',
     eyebrow: 'Öğle',
     title: 'Günün ortasında küçük bir kaçış',
-    description: 'Tatlı bir mola, enerjik bir buluşma ve günün en keyifli saati.',
+    description: 'Tatlı bir mola ve enerjik bir buluşma.',
     icon: <Sun size={28} />,
     image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80',
     accent: 'text-[#e8d59a]',
@@ -46,7 +46,7 @@ const options: MoodOption[] = [
     id: 'Akşam',
     eyebrow: 'Akşam',
     title: 'Gecenin en güzel planı',
-    description: 'Daha romantik, daha etkileyici ve unutulmayacak bir akşam buluşması.',
+    description: 'Daha romantik ve daha etkileyici bir akşam.',
     icon: <Moon size={28} />,
     image: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=1200&q=80',
     accent: 'text-[#d4af37]',
@@ -73,15 +73,15 @@ export default function TimePickerCard({ onSelect }: TimePickerCardProps) {
         </div>
 
         <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.32em] text-[#d4af37]/80">
-          Bir an seç
+          Vakti seç
         </p>
 
         <h2 className="font-serif text-3xl italic leading-tight text-white sm:text-4xl md:text-5xl">
-          Ne zaman buluşalım?
+          Hangi vakitte buluşalım?
         </h2>
 
         <p className="mt-3 max-w-xl text-sm leading-relaxed text-white/55 sm:text-base">
-          Sadece bir saat değil, birlikte yaşayacağımız havayı seç.
+          Önce buluşmanın havasını seç. Tam saati bir sonraki adımda soracağım.
         </p>
       </div>
 
@@ -95,41 +95,38 @@ export default function TimePickerCard({ onSelect }: TimePickerCardProps) {
             whileHover={{ y: -6, scale: 1.015 }}
             whileTap={{ scale: 0.985 }}
             onClick={() => onSelect(option.id)}
-            className={`group relative min-h-[390px] overflow-hidden rounded-[1.75rem] border text-left transition-all duration-300 ${option.border} ${option.glow}`}
+            className={`group relative overflow-hidden rounded-[1.75rem] border bg-[#111] text-left transition-all duration-300 ${option.border} ${option.glow}`}
           >
-            <img
-              src={option.image}
-              alt={`${option.eyebrow} buluşma atmosferi`}
-              className="absolute inset-0 h-full w-full object-cover opacity-70 transition duration-700 group-hover:scale-105 group-hover:opacity-85"
-              loading="lazy"
-              referrerPolicy="no-referrer"
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/58 to-black/92" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(212,175,55,0.22),transparent_34%)] opacity-70" />
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
-
-            <div className="relative z-10 flex min-h-[390px] flex-col p-6">
-              <div className={`mb-auto flex h-14 w-14 items-center justify-center rounded-full border border-white/15 bg-black/45 backdrop-blur-md ${option.accent}`}>
+            <div className="relative h-44 overflow-hidden sm:h-48">
+              <img
+                src={option.image}
+                alt={`${option.eyebrow} buluşma atmosferi`}
+                className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                loading="lazy"
+                referrerPolicy="no-referrer"
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/18 to-[#111]/96" />
+              <div className={`absolute left-5 top-5 flex h-14 w-14 items-center justify-center rounded-full border border-white/15 bg-black/55 backdrop-blur-md ${option.accent}`}>
                 {option.icon}
               </div>
+            </div>
 
-              <div className="mt-10">
-                <div className="mb-3 text-[11px] font-semibold uppercase tracking-[0.28em] text-white/50">
-                  {option.eyebrow}
-                </div>
+            <div className="relative min-h-[230px] bg-[#111]/95 p-6">
+              <div className="mb-3 text-[11px] font-semibold uppercase tracking-[0.28em] text-white/45">
+                {option.eyebrow}
+              </div>
 
-                <h3 className="mb-3 font-serif text-[1.85rem] italic leading-[1.03] text-white drop-shadow-xl sm:text-[2.05rem]">
-                  {option.title}
-                </h3>
+              <h3 className="mb-3 font-serif text-[1.72rem] italic leading-[1.05] text-white sm:text-[1.9rem]">
+                {option.title}
+              </h3>
 
-                <p className="mb-8 text-sm font-medium leading-7 text-white/78 sm:text-[15px]">
-                  {option.description}
-                </p>
+              <p className="mb-8 text-sm font-medium leading-7 text-white/70 sm:text-[15px]">
+                {option.description}
+              </p>
 
-                <div className="flex items-center justify-between gap-3 text-sm font-semibold text-white/82 transition-colors group-hover:text-white">
-                  <span>Bu an kulağa güzel geliyor</span>
-                  <ArrowRight size={16} className="shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
-                </div>
+              <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between gap-3 text-sm font-semibold text-white/78 transition-colors group-hover:text-white">
+                <span>Bu vakti seç</span>
+                <ArrowRight size={16} className="shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
               </div>
             </div>
           </motion.button>
