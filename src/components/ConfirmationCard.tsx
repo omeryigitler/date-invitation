@@ -1,24 +1,34 @@
-import Confetti from 'react-confetti';
+import { useEffect } from 'react';
+import confetti from 'canvas-confetti';
 import { format } from 'date-fns';
 import { tr } from 'date-fns/locale';
 import { motion } from 'motion/react';
 import { Calendar, Clock, PartyPopper, Utensils } from 'lucide-react';
 import type { DateDetails } from '../types';
-import { useWindowSize } from '../lib/useWindowSize';
 
 interface ConfirmationCardProps {
   details: DateDetails;
 }
 
+const CONFETTI_COLORS = ['#d4af37', '#b8962d', '#ffffff', '#aaaaaa', '#333333'];
+
 export default function ConfirmationCard({ details }: ConfirmationCardProps) {
-  const { width, height } = useWindowSize();
   const formattedDate = details.dateTime ? format(details.dateTime, 'd MMMM yyyy, EEEE', { locale: tr }) : '';
   const formattedTime = details.dateTime ? format(details.dateTime, 'HH:mm') : '';
 
+  useEffect(() => {
+    confetti({ particleCount: 160, spread: 75, origin: { y: 0.6 }, colors: CONFETTI_COLORS });
+
+    const sideBurst = window.setTimeout(() => {
+      confetti({ particleCount: 80, angle: 60, spread: 70, origin: { x: 0 }, colors: CONFETTI_COLORS });
+      confetti({ particleCount: 80, angle: 120, spread: 70, origin: { x: 1 }, colors: CONFETTI_COLORS });
+    }, 250);
+
+    return () => window.clearTimeout(sideBurst);
+  }, []);
+
   return (
     <>
-      <Confetti width={width} height={height} recycle={false} numberOfPieces={500} colors={['#d4af37', '#b8962d', '#ffffff', '#aaaaaa', '#333333']} />
-
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}

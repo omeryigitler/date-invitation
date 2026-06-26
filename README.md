@@ -1,6 +1,6 @@
 # Date Invitation
 
-Romantik ve etkileşimli bir date invitation uygulaması. React, Vite, Tailwind CSS v4, Motion ve date-fns ile hazırlanmıştır.
+Romantik ve etkileşimli bir date invitation uygulaması. React, Vite, Tailwind CSS, Motion ve date-fns ile hazırlanmıştır.
 
 ## Özellikler
 

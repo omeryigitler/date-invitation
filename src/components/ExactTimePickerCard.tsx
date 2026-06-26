@@ -29,6 +29,10 @@ export default function ExactTimePickerCard({ selectedDate, mealTime, onSelect }
   const [error, setError] = useState<string | null>(null);
 
   const slots = useMemo(() => slotsByMeal[mealTime], [mealTime]);
+  const allSlotsPast = useMemo(
+    () => slots.every(time => isBefore(combineDateAndTime(selectedDate, time), new Date())),
+    [slots, selectedDate],
+  );
   const formattedDate = format(selectedDate, 'd MMMM yyyy, EEEE', { locale: tr });
 
   const handleSelect = (time: string) => {
@@ -94,6 +98,12 @@ export default function ExactTimePickerCard({ selectedDate, mealTime, onSelect }
           );
         })}
       </div>
+
+      {allSlotsPast && (
+        <p className="relative mb-4 rounded-xl border border-[#d4af37]/30 bg-[#d4af37]/10 px-4 py-3 text-sm text-[#f0d486]">
+          Bu vakit için hazır saatler bugün geçti. Aşağıdan dilediğin saati seçebilirsin 🙂
+        </p>
+      )}
 
       <div className="relative rounded-2xl border border-white/10 bg-black/35 p-4 text-left">
         <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-white/40">

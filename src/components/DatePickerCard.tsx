@@ -121,7 +121,7 @@ export default function DatePickerCard({ onSelect }: DatePickerCardProps) {
       <div className="relative mb-7 w-full">
         <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.32em] text-[#d4af37]/80">Önce tarihi seçelim</p>
         <h2 className="font-serif text-4xl italic leading-tight text-white md:text-5xl">Hangi gün?</h2>
-        <p className="mx-auto mt-3 max-w-none whitespace-nowrap text-[clamp(0.72rem,2.15vw,1rem)] leading-relaxed text-white/55">
+        <p className="mx-auto mt-3 max-w-sm text-balance text-[clamp(0.78rem,2.4vw,1rem)] leading-relaxed text-white/55 sm:max-w-md sm:whitespace-nowrap">
           Saati bir sonraki adımda netleştireceğiz. Şimdi sadece günü seç.
         </p>
       </div>
