@@ -105,66 +105,87 @@ export default function DatePickerCard({ onSelect }: DatePickerCardProps) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.96, y: 16 }}
+      initial={{ opacity: 0, scale: 0.98, y: 16 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.96 }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className="glass-card relative flex w-full max-w-2xl flex-col items-center overflow-hidden rounded-[2rem] border border-white/5 bg-[#1c1c24] p-6 text-center shadow-2xl sm:p-9"
+      className="relative z-10 w-full max-w-xl overflow-hidden rounded-2xl border border-white/10 bg-[#0a0a0c] font-mono shadow-[0_30px_90px_rgba(0,0,0,0.6)]"
     >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(212,175,55,0.12),transparent_32%)]" />
-      <div className="pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-[#d4af37]/35 to-transparent" />
-
-      <motion.div animate={{ y: [0, -5, 0] }} transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }} className="relative mb-5 text-[#d4af37]">
-        <CalendarHeart size={46} strokeWidth={1.5} />
-      </motion.div>
-
-      <div className="relative mb-7 w-full">
-        <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.32em] text-[#d4af37]/80">Önce tarihi seçelim</p>
-        <h2 className="font-serif text-4xl italic leading-tight text-white md:text-5xl">Hangi gün?</h2>
-        <p className="mx-auto mt-3 max-w-sm text-balance text-[clamp(0.78rem,2.4vw,1rem)] leading-relaxed text-white/55 sm:max-w-md sm:whitespace-nowrap">
-          Saati bir sonraki adımda netleştireceğiz. Şimdi sadece günü seç.
-        </p>
+      {/* terminal üst bar */}
+      <div className="flex items-center gap-2 border-b border-white/[0.06] bg-white/[0.03] px-4 py-3">
+        <span className="h-3 w-3 rounded-full bg-[#ff5f57]" />
+        <span className="h-3 w-3 rounded-full bg-[#febc2e]" />
+        <span className="h-3 w-3 rounded-full bg-[#28c840]" />
+        <span className="ml-2 truncate text-[11px] tracking-wide text-white/40">randevu — zsh — tarih</span>
       </div>
 
-      <div className="relative mb-7 w-full rounded-[1.5rem] border border-[#d4af37]/20 bg-black/35 p-5 shadow-[0_0_45px_rgba(212,175,55,0.08)]">
-        <div className="text-[11px] font-semibold uppercase tracking-[0.28em] text-white/35">Seçilen tarih</div>
-        <div className="mt-2 font-serif text-3xl italic text-white sm:text-4xl">
-          {format(selectedDate, 'EEEE', { locale: tr })}
-        </div>
-        <div className="mt-1 text-5xl font-bold tracking-tight text-[#d4af37] sm:text-6xl">
-          {format(selectedDate, 'd', { locale: tr })}
-        </div>
-        <div className="mt-1 text-sm font-medium uppercase tracking-[0.22em] text-white/55">
-          {format(selectedDate, 'MMMM yyyy', { locale: tr })}
-        </div>
-      </div>
+      <div className="relative px-6 py-7 text-center sm:px-8">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(212,175,55,0.08),transparent_42%)]" />
 
-      <div className="relative mb-7 flex w-full select-none items-center justify-center gap-4">
-        <FlipCard label="Ay" value={format(selectedDate, 'MMM', { locale: tr })} onUp={() => handleModifyDate('month', 1)} onDown={() => handleModifyDate('month', -1)} />
-        <FlipCard label="Gün" value={selectedDate.getDate()} onUp={() => handleModifyDate('day', 1)} onDown={() => handleModifyDate('day', -1)} />
-      </div>
+        <div className="relative">
+          <p className="text-left text-white/55">
+            <span className="text-[#28c840]">➜</span> <span className="text-[#7dd3fc]">~/randevu</span>{' '}
+            <span className="text-white/80">./tarih_sec.sh</span>
+          </p>
 
-      <AnimatePresence>
-        {warningMsg && (
           <motion.div
-            initial={{ opacity: 0, y: 10, height: 0 }}
-            animate={{ opacity: 1, y: 0, height: 'auto' }}
-            exit={{ opacity: 0, y: -10, height: 0 }}
-            className="relative mb-4 w-full overflow-hidden"
+            animate={{ y: [0, -5, 0] }}
+            transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
+            className="mb-4 mt-5 flex justify-center text-[#d4af37] drop-shadow-[0_0_18px_rgba(212,175,55,0.2)]"
           >
-            <div className="rounded-xl border border-[#df3f2f]/50 bg-[#df3f2f]/20 p-4 text-center text-sm font-medium text-red-100 shadow-[0_0_15px_rgba(223,63,47,0.2)]">
-              {warningMsg}
-            </div>
+            <CalendarHeart size={42} strokeWidth={1.5} />
           </motion.div>
-        )}
-      </AnimatePresence>
 
-      <button
-        onClick={handleSelect}
-        className="relative mt-1 w-full rounded-full bg-gradient-to-r from-[#df3f2f] to-[#f45c4e] py-4 text-sm font-semibold uppercase tracking-widest text-white transition-all hover:shadow-[0_0_20px_rgba(223,63,47,0.4)] active:scale-95"
-      >
-        Bu günü seç
-      </button>
+          <h2 className="font-serif text-4xl italic leading-tight text-[#d4af37] drop-shadow-[0_0_22px_rgba(212,175,55,0.16)] sm:text-5xl">
+            Hangi gün?
+          </h2>
+          <p className="mx-auto mt-3 max-w-md text-balance text-xs leading-relaxed text-white/35">
+            <span className="text-white/25">{'//'}</span> saati sonraki adımda netleştireceğiz, şimdi sadece günü seç
+          </p>
+
+          {/* seçilen tarih — terminal kutusu, romantik okuma korunur */}
+          <div className="mt-6 rounded-lg border border-white/[0.08] bg-black/40 p-5">
+            <div className="text-[11px] uppercase tracking-[0.28em] text-white/35">seçilen tarih</div>
+            <div className="mt-2 font-serif text-3xl italic text-white sm:text-4xl">
+              {format(selectedDate, 'EEEE', { locale: tr })}
+            </div>
+            <div className="mt-1 text-5xl font-bold tracking-tight text-[#d4af37] sm:text-6xl">
+              {format(selectedDate, 'd', { locale: tr })}
+            </div>
+            <div className="mt-1 text-sm uppercase tracking-[0.22em] text-white/45">
+              {format(selectedDate, 'MMMM yyyy', { locale: tr })}
+            </div>
+          </div>
+
+          {/* flip kartlar — beğenilen alt kısım, korunuyor */}
+          <div className="mt-6 flex select-none items-center justify-center gap-4">
+            <FlipCard label="Ay" value={format(selectedDate, 'MMM', { locale: tr })} onUp={() => handleModifyDate('month', 1)} onDown={() => handleModifyDate('month', -1)} />
+            <FlipCard label="Gün" value={selectedDate.getDate()} onUp={() => handleModifyDate('day', 1)} onDown={() => handleModifyDate('day', -1)} />
+          </div>
+
+          <AnimatePresence>
+            {warningMsg && (
+              <motion.div
+                initial={{ opacity: 0, y: 10, height: 0 }}
+                animate={{ opacity: 1, y: 0, height: 'auto' }}
+                exit={{ opacity: 0, y: -10, height: 0 }}
+                className="mt-5 overflow-hidden"
+              >
+                <div className="rounded-lg border border-[#ff5f57]/30 bg-[#ff5f57]/10 p-3 text-left text-sm text-red-100">
+                  <span className="font-bold text-[#ff5f57]">WARNING:</span> {warningMsg}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <button
+            onClick={handleSelect}
+            className="mt-6 w-full rounded-lg bg-green-400 py-4 text-sm font-bold uppercase tracking-widest text-black transition-all hover:-translate-y-0.5 hover:bg-green-300 active:scale-95"
+          >
+            Bu günü seç
+          </button>
+        </div>
+      </div>
     </motion.div>
   );
 }
