@@ -1,13 +1,23 @@
 #!/usr/bin/env node
 
-const { webcrypto } = require('node:crypto');
+const { spawnSync } = require('node:child_process');
+const path = require('node:path');
 
-if (!globalThis.crypto) {
-  globalThis.crypto = webcrypto;
+const viteBin = path.join(process.cwd(), 'node_modules', 'vite', 'bin', 'vite.js');
+const preloader = path.join(process.cwd(), 'scripts', 'polyfill-crypto.mjs');
+
+const result = spawnSync(
+  process.execPath,
+  ['--import', preloader, viteBin, ...process.argv.slice(2)],
+  {
+    stdio: 'inherit',
+    env: process.env,
+  },
+);
+
+if (result.error) {
+  console.error(result.error);
+  process.exit(1);
 }
 
-if (typeof globalThis.crypto.getRandomValues !== 'function') {
-  globalThis.crypto.getRandomValues = webcrypto.getRandomValues.bind(webcrypto);
-}
-
-import('vite/bin/vite.js');
+process.exit(result.status ?? 0);
