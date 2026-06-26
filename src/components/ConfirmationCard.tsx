@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import confetti from 'canvas-confetti';
 import { format } from 'date-fns';
 import { tr } from 'date-fns/locale';
 import { motion } from 'motion/react';
-import { Calendar, Clock, PartyPopper, Utensils } from 'lucide-react';
+import { Calendar, Check, Clock, PartyPopper, Share2, Utensils } from 'lucide-react';
 import type { DateDetails } from '../types';
 
 interface ConfirmationCardProps {
@@ -13,8 +13,35 @@ interface ConfirmationCardProps {
 const CONFETTI_COLORS = ['#d4af37', '#b8962d', '#ffffff', '#aaaaaa', '#333333'];
 
 export default function ConfirmationCard({ details }: ConfirmationCardProps) {
+  const [copied, setCopied] = useState(false);
   const formattedDate = details.dateTime ? format(details.dateTime, 'd MMMM yyyy, EEEE', { locale: tr }) : '';
   const formattedTime = details.dateTime ? format(details.dateTime, 'HH:mm') : '';
+
+  const shareText = [
+    'Buluşma planımız hazır! 💛',
+    `📅 ${formattedDate}`,
+    `🕘 ${details.mealTime}${formattedTime ? ` • ${formattedTime}` : ''}`,
+    `🍽️ ${details.food}`,
+  ].join('\n');
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: 'Buluşma Planımız', text: shareText });
+      } catch {
+        // paylaşım iptal edildi — sessizce geç
+      }
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(shareText);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // pano erişimi yoksa sessizce geç
+    }
+  };
 
   useEffect(() => {
     confetti({ particleCount: 160, spread: 75, origin: { y: 0.6 }, colors: CONFETTI_COLORS });
@@ -81,8 +108,15 @@ export default function ConfirmationCard({ details }: ConfirmationCardProps) {
           </div>
         </div>
 
-        <div className="mt-8 text-center">
-          <p className="text-[10px] uppercase tracking-widest text-white/30">Ekran görüntüsü alıp bana göndermeyi unutma!</p>
+        <div className="mt-8 flex flex-col items-center gap-3">
+          <button
+            onClick={handleShare}
+            className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#d4af37] px-6 text-sm font-semibold text-black transition hover:scale-[1.02] active:scale-95"
+          >
+            {copied ? <Check size={17} /> : <Share2 size={17} />}
+            {copied ? 'Panoya kopyalandı!' : 'Planı paylaş'}
+          </button>
+          <p className="text-center text-[10px] uppercase tracking-widest text-white/30">Planı bana gönder, gerisini bana bırak 💛</p>
         </div>
       </motion.div>
     </>
