@@ -4,9 +4,9 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --port=3000 --host=0.0.0.0",
-    "build": "vite build",
-    "preview": "vite preview",
+    "dev": "node scripts/vite.cjs --port=3000 --host=0.0.0.0",
+    "build": "node scripts/vite.cjs build",
+    "preview": "node scripts/vite.cjs preview",
     "lint": "tsc --noEmit"
   },
   "dependencies": {
