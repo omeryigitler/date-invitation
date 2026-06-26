@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight, Moon, Sun, Sunrise } from 'lucide-react';
+import ImageWithFallback from './ImageWithFallback';
 import type { MealTime } from '../types';
 
 interface TimePickerCardProps {
@@ -91,12 +92,12 @@ export default function TimePickerCard({ onSelect }: TimePickerCardProps) {
                 className="group relative overflow-hidden rounded-xl border border-white/10 bg-[#0c0c10] text-left transition-colors duration-300 hover:border-green-400/45"
               >
                 <div className="relative h-40 overflow-hidden sm:h-44">
-                  <img
+                  <ImageWithFallback
                     src={option.image}
                     alt={`${option.id} buluşma atmosferi`}
+                    label={option.id}
                     className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
                     loading="lazy"
-                    referrerPolicy="no-referrer"
                   />
                   <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/20 to-[#0c0c10]" />
                   <div className="absolute left-4 top-4 flex h-11 w-11 items-center justify-center rounded-lg border border-white/15 bg-black/55 text-[#d4af37] backdrop-blur-md">
