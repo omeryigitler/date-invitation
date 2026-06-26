@@ -27,7 +27,7 @@ export default function ProposalCard({ onYes }: ProposalCardProps) {
 
     const timer = window.setTimeout(() => {
       setTypedChars(prev => prev + 1);
-    }, 45 + Math.random() * 45);
+    }, 42 + Math.random() * 42);
 
     return () => window.clearTimeout(timer);
   }, [line1.length, line2.length, typedChars]);
@@ -95,56 +95,59 @@ export default function ProposalCard({ onYes }: ProposalCardProps) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 18 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.95 }}
+      exit={{ opacity: 0, scale: 0.96 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className="glass-card flex w-full max-w-[min(92vw,640px)] flex-col items-center justify-center rounded-3xl p-6 text-center sm:p-10 md:p-12"
+      className="glass-card relative flex w-full max-w-[min(92vw,640px)] flex-col items-center justify-center overflow-hidden rounded-3xl px-6 py-8 text-center shadow-[0_24px_90px_rgba(0,0,0,0.42)] sm:px-10 sm:py-11 md:px-12 md:py-12"
     >
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(212,175,55,0.11),transparent_34%),radial-gradient(circle_at_18%_92%,rgba(201,58,47,0.08),transparent_30%)]" />
+      <div className="pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-[#d4af37]/35 to-transparent" />
+
       <motion.div
-        animate={{ scale: [1, 1.1, 1] }}
-        transition={{ repeat: Infinity, duration: 2 }}
-        className="mb-6 text-[#d4af37]"
+        animate={{ scale: [1, 1.08, 1] }}
+        transition={{ repeat: Infinity, duration: 2.2 }}
+        className="relative mb-7 text-[#d4af37] drop-shadow-[0_0_18px_rgba(212,175,55,0.18)]"
       >
-        <Heart size={48} fill="currentColor" />
+        <Heart size={46} fill="currentColor" />
       </motion.div>
 
-      <div className="mb-8 flex min-h-[240px] w-full flex-col items-center justify-center gap-4 sm:min-h-[300px]">
-        <p className="w-full px-2 font-serif text-base font-semibold leading-snug text-white sm:text-xl md:text-2xl">
+      <div className="relative mb-9 flex w-full flex-col items-center justify-center gap-3.5 sm:mb-10 sm:gap-4">
+        <p className="w-full px-2 font-serif text-[1.05rem] font-semibold leading-snug text-white/95 sm:text-xl md:text-[1.35rem]">
           {staticLine}
         </p>
 
-        <p className="w-full break-words px-2 font-mono text-[clamp(1.15rem,4vw,1.9rem)] leading-tight text-green-400">
+        <p className="w-full break-words px-2 font-mono text-[clamp(1.05rem,3.3vw,1.55rem)] leading-tight text-green-400 drop-shadow-[0_0_14px_rgba(74,222,128,0.16)]">
           {showLine1}
           {isTypingLine1 && (
             <motion.span
               animate={{ opacity: [1, 1, 0, 0] }}
               transition={{ repeat: Infinity, duration: 1, times: [0, 0.5, 0.51, 1] }}
-              className="ml-1 inline-block h-6 w-3 align-middle bg-green-400 md:h-8"
+              className="ml-1 inline-block h-5 w-2.5 align-middle bg-green-400 md:h-7"
             />
           )}
         </p>
 
-        <h1 className="w-full max-w-full break-words px-2 font-serif text-[clamp(2.4rem,6vw,4.6rem)] italic leading-[0.95] text-[#d4af37]">
+        <h1 className="mx-auto w-full max-w-[560px] break-words px-2 font-serif text-[clamp(2.15rem,5.15vw,4.05rem)] italic leading-[0.98] tracking-[-0.035em] text-[#d4af37] drop-shadow-[0_0_22px_rgba(212,175,55,0.13)]">
           {showLine2}
           {isTypingLine2 && (
             <motion.span
               animate={{ opacity: [1, 1, 0, 0] }}
               transition={{ repeat: Infinity, duration: 1, times: [0, 0.5, 0.51, 1] }}
-              className="ml-2 inline-block h-8 w-4 align-middle bg-[#d4af37] md:h-12"
+              className="ml-2 inline-block h-7 w-3.5 align-middle bg-[#d4af37] md:h-10"
             />
           )}
         </h1>
       </div>
 
-      <div className="mb-8 flex h-16 w-full items-center justify-center">
+      <div className="relative mb-5 flex min-h-12 w-full items-center justify-center px-2 sm:mb-6">
         <AnimatePresence>
           {isMoved && (
             <motion.p
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="text-center font-mono text-sm tracking-wide text-yellow-400/90 md:text-base"
+              className="max-w-md text-center font-mono text-xs leading-relaxed tracking-wide text-yellow-400/90 sm:text-sm"
             >
               <span className="font-bold text-red-400">WARNING:</span> 'Hayır' seçeneği güvenlik duvarına takıldı. Lütfen 'Evet' ile devam edin.
             </motion.p>
@@ -152,10 +155,10 @@ export default function ProposalCard({ onYes }: ProposalCardProps) {
         </AnimatePresence>
       </div>
 
-      <div className="relative flex h-16 w-full items-center justify-center gap-6">
+      <div className="relative flex h-14 w-full items-center justify-center gap-5 sm:gap-6">
         <button
           onClick={handleYesClick}
-          className="btn-glow relative z-10 rounded-full bg-[#d4af37] px-12 py-4 font-semibold tracking-wider text-black shadow-lg transition-all hover:scale-105 active:scale-95"
+          className="btn-glow relative z-10 min-w-[132px] rounded-full bg-[#d4af37] px-10 py-3.5 font-semibold tracking-wide text-black shadow-[0_12px_30px_rgba(212,175,55,0.18)] transition-all hover:scale-105 active:scale-95 sm:px-12"
         >
           Evet
         </button>
@@ -175,7 +178,7 @@ export default function ProposalCard({ onYes }: ProposalCardProps) {
               moveNoButton();
             }}
             className={cn(
-              'rounded-full border border-[#d4af37] px-8 py-4 text-xs tracking-widest text-white/80 transition-colors',
+              'rounded-full border border-[#d4af37]/80 px-7 py-3.5 text-xs font-semibold tracking-widest text-white/70 transition-colors hover:bg-white/[0.03] hover:text-white/90',
               isMoved ? 'fixed z-[100]' : 'absolute',
             )}
             style={{ margin: 0, pointerEvents: 'auto', transformOrigin: 'center' }}
@@ -183,7 +186,7 @@ export default function ProposalCard({ onYes }: ProposalCardProps) {
             Hayır
           </motion.button>
 
-          <div className="pointer-events-none px-8 py-4 opacity-0">Hayır</div>
+          <div className="pointer-events-none px-7 py-3.5 opacity-0">Hayır</div>
         </div>
       </div>
     </motion.div>
