@@ -3,6 +3,7 @@ import { AnimatePresence } from 'motion/react';
 import type { DateDetails, MealTime, Step } from './types';
 import ConfirmationCard from './components/ConfirmationCard';
 import DatePickerCard from './components/DatePickerCard';
+import ExactTimePickerCard from './components/ExactTimePickerCard';
 import FoodPickerCard from './components/FoodPickerCard';
 import ProposalCard from './components/ProposalCard';
 import TimePickerCard from './components/TimePickerCard';
@@ -25,6 +26,11 @@ export default function AppNew() {
 
   const handleMealSelect = (mealTime: MealTime) => {
     setDetails(prev => ({ ...prev, mealTime }));
+    setStep('exactTime');
+  };
+
+  const handleExactTimeSelect = (dateTime: Date) => {
+    setDetails(prev => ({ ...prev, dateTime }));
     setStep('food');
   };
 
@@ -40,6 +46,9 @@ export default function AppNew() {
           {step === 'proposal' && <ProposalCard key="proposal" onYes={handleYes} />}
           {step === 'date' && <DatePickerCard key="date" onSelect={handleDateSelect} />}
           {step === 'meal' && <TimePickerCard key="meal" onSelect={handleMealSelect} />}
+          {step === 'exactTime' && details.date && details.mealTime && (
+            <ExactTimePickerCard key="exactTime" selectedDate={details.date} mealTime={details.mealTime} onSelect={handleExactTimeSelect} />
+          )}
           {step === 'food' && details.mealTime && <FoodPickerCard key="food" time={details.mealTime} onSelect={handleFoodSelect} />}
           {step === 'confirmation' && <ConfirmationCard key="confirmation" details={details} />}
         </AnimatePresence>
