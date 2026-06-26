@@ -13,10 +13,10 @@ type MoodOption = {
   title: string;
   description: string;
   icon: ReactNode;
+  image: string;
   accent: string;
   glow: string;
   border: string;
-  bg: string;
 };
 
 const options: MoodOption[] = [
@@ -26,10 +26,10 @@ const options: MoodOption[] = [
     title: 'Güne birlikte başlayalım',
     description: 'Sıcak bir kahvaltı, sakin bir başlangıç ve güzel bir sabah hissi.',
     icon: <Sunrise size={28} />,
+    image: 'https://images.unsplash.com/photo-149 sunrise?auto=format&fit=crop&w=1200&q=80',
     accent: 'text-[#f6c35b]',
-    glow: 'shadow-[0_0_50px_rgba(246,195,91,0.16)]',
-    border: 'border-[#f6c35b]/20 hover:border-[#f6c35b]/45',
-    bg: 'bg-[radial-gradient(circle_at_top_left,rgba(246,195,91,0.16),transparent_35%),linear-gradient(135deg,rgba(255,255,255,0.03),rgba(255,255,255,0.015))]',
+    glow: 'shadow-[0_0_55px_rgba(246,195,91,0.16)]',
+    border: 'border-[#f6c35b]/25 hover:border-[#f6c35b]/55',
   },
   {
     id: 'Öğle',
@@ -37,10 +37,10 @@ const options: MoodOption[] = [
     title: 'Günün ortasında küçük bir kaçış',
     description: 'Tatlı bir mola, enerjik bir buluşma ve günün en keyifli saati.',
     icon: <Sun size={28} />,
+    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80',
     accent: 'text-[#e8d59a]',
-    glow: 'shadow-[0_0_50px_rgba(232,213,154,0.13)]',
-    border: 'border-[#e8d59a]/20 hover:border-[#e8d59a]/45',
-    bg: 'bg-[radial-gradient(circle_at_top_left,rgba(232,213,154,0.12),transparent_35%),linear-gradient(135deg,rgba(255,255,255,0.03),rgba(255,255,255,0.015))]',
+    glow: 'shadow-[0_0_55px_rgba(232,213,154,0.13)]',
+    border: 'border-[#e8d59a]/25 hover:border-[#e8d59a]/55',
   },
   {
     id: 'Akşam',
@@ -48,10 +48,10 @@ const options: MoodOption[] = [
     title: 'Gecenin en güzel planı',
     description: 'Daha romantik, daha etkileyici ve unutulmayacak bir akşam buluşması.',
     icon: <Moon size={28} />,
+    image: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=1200&q=80',
     accent: 'text-[#d4af37]',
-    glow: 'shadow-[0_0_60px_rgba(212,175,55,0.18)]',
-    border: 'border-[#d4af37]/25 hover:border-[#d4af37]/55',
-    bg: 'bg-[radial-gradient(circle_at_top_left,rgba(212,175,55,0.13),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(201,58,47,0.08),transparent_30%),linear-gradient(135deg,rgba(255,255,255,0.03),rgba(255,255,255,0.015))]',
+    glow: 'shadow-[0_0_65px_rgba(212,175,55,0.2)]',
+    border: 'border-[#d4af37]/30 hover:border-[#d4af37]/65',
   },
 ];
 
@@ -62,7 +62,7 @@ export default function TimePickerCard({ onSelect }: TimePickerCardProps) {
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, scale: 0.98 }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className="glass-card relative w-full max-w-5xl overflow-hidden rounded-[2rem] px-6 py-8 sm:px-8 sm:py-10 md:px-10 md:py-12"
+      className="glass-card relative w-full max-w-6xl overflow-hidden rounded-[2rem] px-6 py-8 sm:px-8 sm:py-10 md:px-10 md:py-12"
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(212,175,55,0.08),transparent_30%)]" />
       <div className="pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-[#d4af37]/35 to-transparent" />
@@ -95,30 +95,42 @@ export default function TimePickerCard({ onSelect }: TimePickerCardProps) {
             whileHover={{ y: -6, scale: 1.015 }}
             whileTap={{ scale: 0.985 }}
             onClick={() => onSelect(option.id)}
-            className={`group relative min-h-[330px] overflow-hidden rounded-[1.75rem] border p-6 text-left transition-all duration-300 ${option.border} ${option.bg} ${option.glow}`}
+            className={`group relative min-h-[390px] overflow-hidden rounded-[1.75rem] border text-left transition-all duration-300 ${option.border} ${option.glow}`}
           >
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-            <div className="absolute right-5 top-5 h-24 w-24 rounded-full bg-white/[0.025] blur-xl transition-transform duration-500 group-hover:scale-125" />
+            <img
+              src={option.image}
+              alt={`${option.eyebrow} buluşma atmosferi`}
+              className="absolute inset-0 h-full w-full object-cover opacity-70 transition duration-700 group-hover:scale-105 group-hover:opacity-85"
+              loading="lazy"
+              referrerPolicy="no-referrer"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/58 to-black/92" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(212,175,55,0.22),transparent_34%)] opacity-70" />
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
 
-            <div className={`mb-7 flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-black/30 ${option.accent}`}>
-              {option.icon}
-            </div>
+            <div className="relative z-10 flex min-h-[390px] flex-col p-6">
+              <div className={`mb-auto flex h-14 w-14 items-center justify-center rounded-full border border-white/15 bg-black/45 backdrop-blur-md ${option.accent}`}>
+                {option.icon}
+              </div>
 
-            <div className="mb-3 text-[11px] font-semibold uppercase tracking-[0.28em] text-white/40">
-              {option.eyebrow}
-            </div>
+              <div className="mt-10">
+                <div className="mb-3 text-[11px] font-semibold uppercase tracking-[0.28em] text-white/50">
+                  {option.eyebrow}
+                </div>
 
-            <h3 className="mb-3 font-serif text-[1.75rem] italic leading-[1.05] text-white sm:text-[1.95rem]">
-              {option.title}
-            </h3>
+                <h3 className="mb-3 font-serif text-[1.85rem] italic leading-[1.03] text-white drop-shadow-xl sm:text-[2.05rem]">
+                  {option.title}
+                </h3>
 
-            <p className="mb-8 text-sm leading-7 text-white/58 sm:text-[15px]">
-              {option.description}
-            </p>
+                <p className="mb-8 text-sm font-medium leading-7 text-white/78 sm:text-[15px]">
+                  {option.description}
+                </p>
 
-            <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between gap-3 text-sm font-medium text-white/72 transition-colors group-hover:text-white">
-              <span>Bu an kulağa güzel geliyor</span>
-              <ArrowRight size={16} className="shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
+                <div className="flex items-center justify-between gap-3 text-sm font-semibold text-white/82 transition-colors group-hover:text-white">
+                  <span>Bu an kulağa güzel geliyor</span>
+                  <ArrowRight size={16} className="shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
+                </div>
+              </div>
             </div>
           </motion.button>
         ))}
