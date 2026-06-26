@@ -26,7 +26,7 @@ const options: MoodOption[] = [
     title: 'Güne birlikte başlayalım',
     description: 'Sıcak bir kahvaltı, sakin bir başlangıç ve güzel bir sabah hissi.',
     icon: <Sunrise size={28} />,
-    image: 'https://images.unsplash.com/photo-149 sunrise?auto=format&fit=crop&w=1200&q=80',
+    image: 'https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?auto=format&fit=crop&w=1200&q=80',
     accent: 'text-[#f6c35b]',
     glow: 'shadow-[0_0_55px_rgba(246,195,91,0.16)]',
     border: 'border-[#f6c35b]/25 hover:border-[#f6c35b]/55',
