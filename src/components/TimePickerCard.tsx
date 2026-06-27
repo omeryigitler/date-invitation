@@ -89,9 +89,9 @@ export default function TimePickerCard({ onSelect }: TimePickerCardProps) {
                 whileHover={{ y: -5 }}
                 whileTap={{ scale: 0.985 }}
                 onClick={() => onSelect(option.id)}
-                className="group relative overflow-hidden rounded-xl border border-white/10 bg-[#0c0c10] text-left transition-colors duration-300 hover:border-green-400/45"
+                className="group relative flex flex-col overflow-hidden rounded-xl border border-white/10 bg-[#0c0c10] text-left transition-colors duration-300 hover:border-green-400/45"
               >
-                <div className="relative h-40 overflow-hidden sm:h-44">
+                <div className="relative h-44 overflow-hidden sm:h-52">
                   <ImageWithFallback
                     src={option.image}
                     alt={`${option.id} buluşma atmosferi`}
@@ -99,18 +99,18 @@ export default function TimePickerCard({ onSelect }: TimePickerCardProps) {
                     className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/20 to-[#0c0c10]" />
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0c0c10]" />
                   <div className="absolute left-4 top-4 flex h-11 w-11 items-center justify-center rounded-lg border border-white/15 bg-black/55 text-[#d4af37] backdrop-blur-md">
                     {option.icon}
                   </div>
                   <div className="absolute right-4 top-4 text-xs text-white/45">{option.index}</div>
                 </div>
 
-                <div className="p-5">
+                <div className="flex flex-1 flex-col p-5">
                   <div className="text-[11px] uppercase tracking-[0.24em] text-green-400/80">{option.id}</div>
                   <h3 className="mt-2 font-serif text-xl italic leading-tight text-white">{option.title}</h3>
                   <p className="mt-2 text-xs leading-relaxed text-white/55">{option.description}</p>
-                  <div className="mt-4 flex items-center gap-2 text-sm font-semibold text-green-300 transition-colors">
+                  <div className="mt-auto flex items-center gap-2 pt-4 text-sm font-semibold text-green-300 transition-colors">
                     <span>→ bu vakti seç</span>
                     <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
                   </div>
