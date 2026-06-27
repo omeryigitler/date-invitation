@@ -96,7 +96,7 @@ export default function TimePickerCard({ onSelect }: TimePickerCardProps) {
                     src={option.image}
                     alt={`${option.id} buluşma atmosferi`}
                     label={option.id}
-                    className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                    className="h-full w-full object-cover"
                     loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0c0c10]" />
